@@ -283,9 +283,9 @@ public class GuidUtil {
 		// retVal = retVal.toUpperCase();
 
 		guidString += " v";
-		versionData[0] = (bytes[17] << 8) + bytes[16];
+		versionData[0] = readVersion(bytes, 16);
 		guidString += Integer.toString(versionData[0]) + ".";
-		versionData[1] = (bytes[19] << 8) + bytes[18];
+		versionData[1] = readVersion(bytes, 18);
 		guidString += Integer.toString(versionData[1]);
 
 		if (validate && !NewGuid.isOKForGUID(bytes, 0)) {
@@ -293,6 +293,10 @@ public class GuidUtil {
 		}
 
 		return guidString;
+	}
+
+	static int readVersion(byte[] bytes, int offset) {
+		return (Byte.toUnsignedInt(bytes[offset + 1]) << 8) | Byte.toUnsignedInt(bytes[offset]);
 	}
 
 	private static final String MS_GUID_PREFIX = "_GUID_";
